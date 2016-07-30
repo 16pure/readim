@@ -77,86 +77,58 @@ void featureTracking(Mat img_1, Mat img_2, vector<Point2f>& points1, vector<Poin
 
 }
 
-void KAZEdesu(Mat img_1, vector<Point2f>& points1){
+void KAZEdesu(Mat img_1, vector<Point2f>& points1,vector<KeyPoint>& keypoints_1){
 
  int minHessian = 400;
  Ptr<cv::KAZE> detector = KAZE::create( minHessian );
  //std::vector
- vector<KeyPoint> keypoints_1;
+ //vector<KeyPoint> keypoints_1;
  detector->detect( img_1, keypoints_1 );
  KeyPoint::convert(keypoints_1, points1, vector<int>());
 
-
-  //画像に丸書く
-  Mat img_keypoints;
-  drawKeypoints( img_1, keypoints_1, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
-  imshow("img", img_keypoints );
 }
 
 //ORB追加
-void ORBdesu(Mat img_1, vector<Point2f>& points1){
+void ORBdesu(Mat img_1, vector<Point2f>& points1,vector<KeyPoint>& keypoints_1){
 
  int minHessian = 400;
  Ptr<cv::ORB> detector = ORB::create( minHessian );
  //std::vector
- vector<KeyPoint> keypoints_1;
+ //vector<KeyPoint> keypoints_1;
  detector->detect( img_1, keypoints_1 );
  KeyPoint::convert(keypoints_1, points1, vector<int>());
 
-
-  //画像に丸書く
-  Mat img_keypoints;
-  drawKeypoints( img_1, keypoints_1, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
-  imshow("img", img_keypoints );
 }
 
 //SIFT追加
-void SIFTdesu(Mat img_1, vector<Point2f>& points1){
+void SIFTdesu(Mat img_1, vector<Point2f>& points1,vector<KeyPoint>& keypoints_1){
 
  int minHessian = 400;
  Ptr<cv::xfeatures2d::SIFT> detector = SIFT::create( minHessian );
  //std::vector
- vector<KeyPoint> keypoints_1;
+ //vector<KeyPoint> keypoints_1;
  detector->detect( img_1, keypoints_1 );
  KeyPoint::convert(keypoints_1, points1, vector<int>());
-
-
-  //画像に丸書く
-  Mat img_keypoints;
-  drawKeypoints( img_1, keypoints_1, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
-  imshow("img", img_keypoints );
-  cout << "ok" << endl;
 }
 
 //SURF追加
-void SURFdesu(Mat img_1, vector<Point2f>& points1){
+void SURFdesu(Mat img_1, vector<Point2f>& points1, vector<KeyPoint>& keypoints_1){
 
  int minHessian = 800;
  Ptr<cv::xfeatures2d::SURF> detector = SURF::create( minHessian );
  //std::vector
- vector<KeyPoint> keypoints_1;
+ //vector<KeyPoint> keypoints_1;
  detector->detect( img_1, keypoints_1 );
  KeyPoint::convert(keypoints_1, points1, vector<int>());
 
-
-  //画像に丸書く
-  Mat img_keypoints;
-  drawKeypoints( img_1, keypoints_1, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
-  imshow("img", img_keypoints );
 }
 
 //FAST追加
-void featureDetection(Mat img_1, vector<Point2f>& points1)	{   //uses FAST as of now, modify parameters as necessary
-  vector<KeyPoint> keypoints_1;
+void featureDetection(Mat img_1, vector<Point2f>& points1,vector<KeyPoint>& keypoints_1)	{   //uses FAST as of now, modify parameters as necessary
+  //vector<KeyPoint> keypoints_1;
   int fast_threshold = 20;
   bool nonmaxSuppression = true;
   FAST(img_1, keypoints_1, fast_threshold, nonmaxSuppression);
   KeyPoint::convert(keypoints_1, points1, vector<int>());
 
-
-    
-  //画像に丸書く
-  Mat img_keypoints;
-  drawKeypoints( img_1, keypoints_1, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
-  imshow("img", img_keypoints );
 }

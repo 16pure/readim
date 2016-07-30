@@ -105,19 +105,18 @@ int main( int argc, char** argv )	{
   cvtColor(img_2_c, img_2, COLOR_BGR2GRAY);
 
 // アルゴリズム選択
-
-  // feature detection, tracking
+  vector<KeyPoint> keypoints_1;
   vector<Point2f> points1, points2;        //vectors to store the coordinates of the feature points
   //SURF
-  //SURFdesu(img_1, points1);
+  //SURFdesu(img_1, points1,keypoints_1);
   //SIFT
-  SIFTdesu(img_1, points1);
+  SIFTdesu(img_1, points1,keypoints_1);
   //FAST
-  //featureDetection(img_1, points1);        //detect features in img_1
+  //featureDetection(img_1, points1,keypoints_1);        //detect features in img_1
   //ORB
-  //ORBdesu(img_1, points1);
+  //ORBdesu(img_1, points1,keypoints_1);
   //KAZE
-  //KAZEdesu(img_1, points1);
+  //KAZEdesu(img_1, points1,keypoints_1);
 
 
 
@@ -126,8 +125,8 @@ int main( int argc, char** argv )	{
 
   //TODO: add a fucntion to load these values directly from KITTI's calib files
   // WARNING: different sequences in the KITTI VO dataset have different intrinsic/extrinsic parameters
-  double focal = 794.3372;
-  cv::Point2d pp(333.8859, 221.9492);
+  double focal = 688.0540;
+  cv::Point2d pp(318.6998, 223.3140);
   //recovering the pose and the essential matrix
   Mat E, R, t, mask;
 
@@ -199,19 +198,23 @@ int main( int argc, char** argv )	{
       cout << "trigerring redection" << endl;
 
 // アルゴリズム選択
-
+		  vector<KeyPoint> keypoints_1;
 		  //SURF
-		  //SURFdesu(prevImage, prevFeatures);
+		  SURFdesu(prevImage, prevFeatures,keypoints_1);
 		  //SIFT
-		  SIFTdesu(img_1, points1);
+		  SIFTdesu(img_1, prevFeatures,keypoints_1);
 		  //FAST
- 		  //featureDetection(prevImage, prevFeatures);
+ 		  //featureDetection(prevImage, prevFeatures,keypoints_1);
 		  //ORB
-		  //ORBdesu(img_1, points1);
+		  //ORBdesu(img_1, prevFeatures,keypoints_1);
 		  //KAZE
-		  //KAZEdesu(img_1, points1);
+		  //KAZEdesu(img_1, pprevFeatures,keypoints_1);
+//
+		  Mat img_keypoints;
+                  drawKeypoints( currImage_c, keypoints_1, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
+                  imshow("img", img_keypoints );
 
-
+//
       featureTracking(prevImage,currImage,prevFeatures,currFeatures, status);
       
       
@@ -221,8 +224,8 @@ int main( int argc, char** argv )	{
     prevImage = currImage.clone();
     prevFeatures = currFeatures;
 
-    int x = int(t_f.at<double>(0)) + 500;
-    int y = int(t_f.at<double>(2)) + 100;
+    int x = int(t_f.at<double>(0)) + 100;
+    int y = int(t_f.at<double>(2)) + 500;
     circle(traj, Point(x, y) ,1, CV_RGB(255,0,0), 2);
 
     rectangle( traj, Point(10, 30), Point(550, 50), CV_RGB(0,0,0), CV_FILLED);
@@ -231,6 +234,7 @@ int main( int argc, char** argv )	{
 
     imshow( "Road facing camera", currImage_c);
     imshow( "Trajectory", traj );
+
 
     waitKey(1);
 
